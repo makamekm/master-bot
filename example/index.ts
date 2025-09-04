@@ -93,6 +93,18 @@ async function bootstrap() {
     await run(
         steps,
         db,
+        {
+            vkKey: process.env.VK_KEY,
+            vkSecret: process.env.VK_SECRET,
+            vkConfirmation: process.env.VK_CONFIRMATION,
+            slackKey: process.env.SLACK_BOT_KEY,
+            slackAppToken: process.env.SLACK_BOT_APP_TOKEN,
+            slackSigningSecret: process.env.SLACK_BOT_SIGNING_SECRET,
+            slackChannel: process.env.SLACK_CHANNEL,
+            maxKey: process.env.MAX_KEY,
+            tgKey: process.env.TG_KEY,
+            port: process.env.PORT,
+        },
     );
 }
 

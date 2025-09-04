@@ -38,8 +38,43 @@ export async function run(
         [id: string]: Step;
     },
     db: DataSource,
+    {
+        vkKey,
+        vkSecret,
+        vkConfirmation,
+        slackKey,
+        slackAppToken,
+        slackSigningSecret,
+        slackChannel,
+        maxKey,
+        tgKey,
+        port,
+    }: {
+        vkKey?: string,
+        vkSecret?: string,
+        vkConfirmation?: string,
+        slackKey?: string,
+        slackAppToken?: string,
+        slackSigningSecret?: string,
+        slackChannel?: string,
+        maxKey?: string,
+        tgKey?: string,
+        port?: string | number,
+    },
 ): Promise<Bot> {
-    const bot = new Bot(db);
+    const bot = new Bot({
+        db,
+        vkKey,
+        vkSecret,
+        vkConfirmation,
+        slackKey,
+        slackAppToken,
+        slackSigningSecret,
+        slackChannel,
+        maxKey,
+        tgKey,
+        port,
+    });
 
     const userSource = new UserSource(db);
     const messageSource = new MessageSource(db);

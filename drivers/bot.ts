@@ -53,35 +53,80 @@ function getVKUserId(ctx: VkBotContext) {
 
 export class Bot {
     questionSource: QuestionSource;
+    vkKey?: string;
+    vkSecret?: string;
+    vkConfirmation?: string;
+    slackKey?: string;
+    slackAppToken?: string;
+    slackSigningSecret?: string;
+    slackChannel?: string;
+    maxKey?: string;
+    tgKey?: string;
+    port?: string | number;
 
-    constructor(db: DataSource) {
+    constructor({
+        db,
+        vkKey,
+        vkSecret,
+        vkConfirmation,
+        slackKey,
+        slackAppToken,
+        slackSigningSecret,
+        slackChannel,
+        maxKey,
+        tgKey,
+        port,
+    }: {
+        db: DataSource,
+        vkKey?: string,
+        vkSecret?: string,
+        vkConfirmation?: string,
+        slackKey?: string,
+        slackAppToken?: string,
+        slackSigningSecret?: string,
+        slackChannel?: string,
+        maxKey?: string,
+        tgKey?: string,
+        port?: string | number,
+    }) {
         this.questionSource = new QuestionSource(db);
+        this.vkKey = vkKey;
+        this.vkSecret = vkSecret;
+        this.vkConfirmation = vkConfirmation;
+        this.slackKey = slackKey;
+        this.slackAppToken = slackAppToken;
+        this.slackSigningSecret = slackSigningSecret;
+        this.slackChannel = slackChannel;
+        this.slackChannel = slackChannel;
+        this.maxKey = maxKey;
+        this.tgKey = tgKey;
+        this.port = port;
     }
 
     app: express.Express;
-    vk = !process.env.VK_KEY ? null : new VkBot({
-        token: process.env.VK_KEY!,
-        secret: process.env.VK_SECRET!,
-        confirmation: process.env.VK_CONFIRMATION!,
+    vk = !this.vkKey ? null : new VkBot({
+        token: this.vkKey!,
+        secret: this.vkSecret!,
+        confirmation: this.vkConfirmation!,
         group_id: 0,
     });
-    tg = !process.env.TG_KEY ? null : new Telegraf(process.env.TG_KEY);
-    max = !process.env.MAX_KEY ? null : new MaxBot(process.env.MAX_KEY);
-    slack = !process.env.SLACK_BOT_KEY ? null : new App({
-        token: process.env.SLACK_BOT_KEY,
-        signingSecret: process.env.SLACK_BOT_SIGNING_SECRET,
+    tg = !this.tgKey ? null : new Telegraf(this.tgKey);
+    max = !this.maxKey ? null : new MaxBot(this.maxKey);
+    slack = !this.slackKey ? null : new App({
+        token: this.slackKey,
+        signingSecret: this.slackSigningSecret,
         socketMode: true,
-        appToken: process.env.SLACK_BOT_APP_TOKEN,
+        appToken: this.slackAppToken,
     });
 
     async start() {
-        if (!!process.env.PORT) {
+        if (!!this.port) {
             this.app = express();
         }
 
         this.app?.use(bodyParser.json());
 
-        if (!!process.env.VK_SECRET) {
+        if (!!this.vkSecret) {
             this.vk?.startPolling((err) => {
                 if (err) {
                     console.error(err);
@@ -102,7 +147,7 @@ export class Bot {
             this.slack?.start(),
         ]);
 
-        if (!!process.env.PORT) this.app?.listen(process.env.PORT);
+        if (!!this.port) this.app?.listen(this.port);
     }
 
     async declareCommands({ id, type, message, commands }: {
@@ -190,7 +235,7 @@ export class Bot {
 
                 for (const photo of photos) {
                     const file = await ctx.telegram.getFile(photo.file_id);
-                    const fileUrl = `https://api.telegram.org/file/bot${process.env.TG_KEY}/${file.file_path}`;
+                    const fileUrl = `https://api.telegram.org/file/bot${this.tgKey}/${file.file_path}`;
                     const names = photo.file_name?.split('.');
                     const ext = names?.[(names?.length ?? 0) - 1];
                     files.push({
@@ -203,7 +248,7 @@ export class Bot {
 
                 if (document != null) {
                     const file = await ctx.telegram.getFile(document.file_id);
-                    const fileUrl = `https://api.telegram.org/file/bot${process.env.TG_KEY}/${file.file_path}`;
+                    const fileUrl = `https://api.telegram.org/file/bot${this.tgKey}/${file.file_path}`;
                     const names = document.file_name?.split('.');
                     const ext = names?.[(names?.length ?? 0) - 1];
                     files.push({
@@ -252,7 +297,7 @@ export class Bot {
 
                 for (const photo of photos) {
                     const file = await ctx.telegram.getFile(photo.file_id);
-                    const fileUrl = `https://api.telegram.org/file/bot${process.env.TG_KEY}/${file.file_path}`;
+                    const fileUrl = `https://api.telegram.org/file/bot${this.tgKey}/${file.file_path}`;
                     const names = photo.file_name?.split('.');
                     const ext = names?.[(names?.length ?? 0) - 1];
                     files.push({
@@ -265,7 +310,7 @@ export class Bot {
 
                 if (document != null) {
                     const file = await ctx.telegram.getFile(document.file_id);
-                    const fileUrl = `https://api.telegram.org/file/bot${process.env.TG_KEY}/${file.file_path}`;
+                    const fileUrl = `https://api.telegram.org/file/bot${this.tgKey}/${file.file_path}`;
                     const names = document.file_name?.split('.');
                     const ext = names?.[(names?.length ?? 0) - 1];
                     files.push({
