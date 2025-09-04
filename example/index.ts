@@ -5,7 +5,7 @@ dotenv.config();
 
 import { v4 as uuidv4 } from "uuid";
 import type { DataSource } from "typeorm";
-import { run, type Step, type User } from "../"; // Use https://github.com/makamekm/master-bot
+import { run, type Step, type User } from "master-bot"; // Use https://github.com/makamekm/master-bot
 
 import { DBDriver } from "./data-source";
 

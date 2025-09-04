@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm"
 import { resolve } from "path"
 
-import { User, Message, Question } from "../";
+import { User, Message, Question } from "master-bot";
 
 export const DBDriver = new DataSource({
     type: "sqlite",
