@@ -19,6 +19,10 @@ export class User {
     @Index()
     type: string;
 
-    @Column()
-    step: string;
+    @Column({
+        nullable: true,
+        type: 'varchar',
+        length: 100,
+    })
+    step?: string;
 }
