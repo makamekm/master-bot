@@ -64,6 +64,12 @@ export class Bot {
     tgKey?: string;
     port?: string | number;
 
+    app: express.Express;
+    vk?: VkBot;
+    tg?: Telegraf;
+    max?: MaxBot;
+    slack?: App;
+
     constructor({
         db,
         vkKey,
@@ -101,23 +107,22 @@ export class Bot {
         this.maxKey = maxKey;
         this.tgKey = tgKey;
         this.port = port;
-    }
 
-    app: express.Express;
-    vk = !this.vkKey ? null : new VkBot({
-        token: this.vkKey!,
-        secret: this.vkSecret!,
-        confirmation: this.vkConfirmation!,
-        group_id: 0,
-    });
-    tg = !this.tgKey ? null : new Telegraf(this.tgKey);
-    max = !this.maxKey ? null : new MaxBot(this.maxKey);
-    slack = !this.slackKey ? null : new App({
-        token: this.slackKey,
-        signingSecret: this.slackSigningSecret,
-        socketMode: true,
-        appToken: this.slackAppToken,
-    });
+        this.vk = !this.vkKey ? null : new VkBot({
+            token: this.vkKey!,
+            secret: this.vkSecret!,
+            confirmation: this.vkConfirmation!,
+            group_id: 0,
+        });
+        this.tg = !this.tgKey ? null : new Telegraf(this.tgKey);
+        this.max = !this.maxKey ? null : new MaxBot(this.maxKey);
+        this.slack = !this.slackKey ? null : new App({
+            token: this.slackKey,
+            signingSecret: this.slackSigningSecret,
+            socketMode: true,
+            appToken: this.slackAppToken,
+        });
+    }
 
     async start() {
         if (!!this.port) {
