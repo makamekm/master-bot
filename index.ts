@@ -29,7 +29,7 @@ export type Step = {
     command?: string;
     description?: string;
     text: (ctx: CommandData, user: User, prevStep?: string) => (Promise<string | null | undefined> | string | null | undefined);
-    process?: (ctx: CommandData, user: User, prevStep?: string) => (Promise<string | [string]> | string | [string]);
+    process?: (ctx: CommandData, user: User, prevStep?: string) => (Promise<string | [string] | null | undefined> | string | [string] | null | undefined);
     options?: (ctx: CommandData, user: User, prevStep?: string) => (Promise<OptionItem[]> | OptionItem[]);
 };
 

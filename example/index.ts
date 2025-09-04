@@ -90,3 +90,5 @@ async function bootstrap() {
         db,
     );
 }
+
+bootstrap();
