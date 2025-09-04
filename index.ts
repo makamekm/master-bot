@@ -136,7 +136,7 @@ export async function run(
 
     commands.forEach((command, index) => {
         bot.command(command.command, async (ctx) => {
-            if (await messageSource.register(ctx.id, ctx.type)) return;
+            if (await messageSource.register(ctx.id, ctx.chatId, ctx.type)) return;
             // await bot.declareCommands({
             //     id: ctx.chatId,
             //     type: ctx.type,
@@ -149,7 +149,7 @@ export async function run(
     });
 
     bot.on(async (ctx) => {
-        if (await messageSource.register(ctx.id, ctx.type)) return;
+        if (await messageSource.register(ctx.id, ctx.chatId, ctx.type)) return;
         const user = await userSource.get(ctx.userId, ctx.type);
         await onStep(ctx, user);
     });

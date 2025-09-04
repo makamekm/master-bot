@@ -11,8 +11,13 @@ export class Message {
     @Index()
     uid: string;
 
-    @PrimaryColumn()
+    @Column()
+    @Index()
     id: string;
+
+    @Column()
+    @Index()
+    chatId: string;
 
     @Column()
     @Index()

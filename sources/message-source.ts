@@ -6,25 +6,27 @@ import { Message } from "../tables/message";
 export class MessageSource {
     constructor(private readonly db: DataSource) { }
 
-    async exist(id: string, type: string) {
+    async exist(id: string, chatId: string, type: string) {
         return await this.db.manager.count(Message, {
             where: {
                 id: id,
+                chatId: chatId,
                 type: type,
             },
             take: 1,
         }) > 0;
     }
 
-    async add(id: string, type: string) {
+    async add(id: string, chatId: string, type: string) {
         return await this.db.manager.insert(Message, {
             uid: uuidv4(),
             id: id,
+            chatId: chatId,
             type: type,
         });
     }
 
-    async register(id: string | null | undefined, type: string) {
+    async register(id: string | null | undefined, chatId: string, type: string) {
         if (id == null) {
             return false;
         }
@@ -32,13 +34,14 @@ export class MessageSource {
         const existed = await this.db.manager.count(Message, {
             where: {
                 id: id,
+                chatId: chatId,
                 type: type,
             },
             take: 1,
         }) > 0;
 
         if (!existed) {
-            await this.add(id, type);
+            await this.add(id, chatId, type);
         }
 
         return existed;
