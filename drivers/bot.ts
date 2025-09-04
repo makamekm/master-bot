@@ -530,7 +530,7 @@ export class Bot {
                         inline_keyboard: keyboard.map(
                             key => [Markup.button.callback(key.text, key.data)]
                         ),
-                    } : null,
+                    } : undefined,
                 });
             } else if (type === 'max') {
                 const intId = parseInt(id, 10);
@@ -610,7 +610,7 @@ export class Bot {
                         inline_keyboard: keyboard.map(
                             key => ([Markup.button.callback(key.text, key.data)])
                         ),
-                    } : null,
+                    } : undefined,
                 });
             } else if (type === 'max') {
                 const intId = parseInt(id, 10);
@@ -708,7 +708,7 @@ export class Bot {
                         inline_keyboard: keyboard.map(
                             key => ([Markup.button.callback(key.text, key.data)])
                         ),
-                    } : null,
+                    } : undefined,
                 });
             } else if (type === 'max') {
                 const intId = parseInt(id, 10);
